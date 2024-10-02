@@ -21,6 +21,11 @@
         <br />
 
         Number of Copies: {{ book.num_copies }}
+
+        {% if app.user %}
+            <button class="secondary">Edit</button>
+            <button class="outline">Remove</button>
+        {% endif %}
     </article>
     {% endfor %}
 {% endblock %}
