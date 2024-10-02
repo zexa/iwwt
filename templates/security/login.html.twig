@@ -19,14 +19,8 @@
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {% if app.user %}
-    <div>
-        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-    </div>
-    {% endif %}
-
     <h1>Sign in</h1>
-    <input type="email" placeholder="Email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+    <input type="email" placeholder="Email" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
     <input type="password" placeholder="Password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
 
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
