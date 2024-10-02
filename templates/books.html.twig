@@ -3,6 +3,15 @@
 {% block title %}Books{% endblock %}
 
 {% block stylesheets %}
+<style>
+.space-left {
+    margin-left: 20px;
+}
+.red {
+    border-color: var(--pico-color-red-400);
+    color: var(--pico-color-red-400);
+}
+</style>
 {% endblock %}
 
 
@@ -28,9 +37,14 @@
         <br>
 
         {% if app.user %}
-            <button class="secondary">Edit</button>
-            <button class="outline">Remove</button>
+            <hr>
+            <button>Edit</button>
+            <button class="outline red space-left">Remove</button>
         {% endif %}
     </article>
     {% endfor %}
+
+    {% if app.user %}
+        <button class="secondary">Add Book</button>
+    {% endif %}
 {% endblock %}
