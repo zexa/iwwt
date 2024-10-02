@@ -11,7 +11,12 @@
         {% block javascripts %}
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body>  
+        <header>
+            <a href="/books/">Books</a> |
+        </header>
+        <main class="container">
+            {% block body %}{% endblock %}
+        </main>
     </body>
 </html>
