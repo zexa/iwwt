@@ -2,6 +2,10 @@
 
 {% block title %}Books{% endblock %}
 
+{% block stylesheets %}
+{% endblock %}
+
+
 {% block body %}
     <h1>Books</h1>
     {% for book in books %}
@@ -11,16 +15,17 @@
             <p>{{ book.author }}</p>
         </hgroup>
 
-        <small>ISBN: {{ book.isbn }}</small>
-        <br />
+        <strong>ISBN:</strong> {{ book.isbn }}
+        <br>
 
-        Publication Date: {{ book.publication_date }}
-        <br />
+        <strong>Publication Date:</strong> {{ book.publication_date }}
+        <br>
 
-        Genres: {{ book.genres|join(', ') }}
-        <br />
+        <strong>Genres:</strong> {{ book.genres|join(', ') }}
+        <br>
 
-        Number of Copies: {{ book.num_copies }}
+        <strong>Number of Copies:</strong> {{ book.num_copies }}
+        <br>
 
         {% if app.user %}
             <button class="secondary">Edit</button>
