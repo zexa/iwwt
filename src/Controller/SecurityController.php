@@ -24,6 +24,17 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/signup', name: 'app_signup')]
+    public function signup(AuthenticationUtils $authenticationUtils): Response
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        return $this->render('security/signup.html.twig', [
+            'error' => $error,
+        ]);
+    }
+
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
