@@ -30,7 +30,7 @@ class Book
     private array $genres = [];
 
     #[ORM\Column]
-    private ?int $numberOfCopies = null;
+    private ?int $copies = null;
 
     public function getId(): ?int
     {
@@ -97,14 +97,14 @@ class Book
         return $this;
     }
 
-    public function getNumberOfCopies(): ?int
+    public function getCopies(): ?int
     {
-        return $this->numberOfCopies;
+        return $this->copies;
     }
 
-    public function setNumberOfCopies(int $numberOfCopies): static
+    public function setCopies(int $numberOfCopies): static
     {
-        $this->numberOfCopies = $numberOfCopies;
+        $this->copies = $numberOfCopies;
 
         return $this;
     }
