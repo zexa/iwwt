@@ -27,7 +27,7 @@ class Book
     private ?\DateTimeInterface $publicationDate = null;
 
     #[ORM\Column(type: Types::ARRAY)]
-    private array $genre = [];
+    private array $genres = [];
 
     #[ORM\Column]
     private ?int $numberOfCopies = null;
@@ -85,14 +85,14 @@ class Book
         return $this;
     }
 
-    public function getGenre(): array
+    public function getGenres(): array
     {
-        return $this->genre;
+        return $this->genres;
     }
 
-    public function setGenre(array $genre): static
+    public function setGenres(array $genres): static
     {
-        $this->genre = $genre;
+        $this->genre = $genres;
 
         return $this;
     }
