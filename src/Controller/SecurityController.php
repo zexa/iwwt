@@ -21,17 +21,28 @@ class SecurityController extends AbstractController
 {
     private LoggerInterface $logger;
     private TokenStorageInterface $tokenStorage;
+    private UserPasswordHasherInterface $passwordEncoder;
+    private EntityManagerInterface $entityManager;
+    private AuthenticationUtils $authenticationUtils;
 
-    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        LoggerInterface $logger, 
+        TokenStorageInterface $tokenStorage, 
+        UserPasswordHasherInterface $passwordEncoder, 
+        EntityManagerInterface $entityManager,
+        AuthenticationUtils $authenticationUtils
+    ) {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->entityManager = $entityManager;
+        $this->authenticationUtils = $authenticationUtils;
     }
 
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(): Response
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $this->authenticationUtils->getLastAuthenticationError();
         if ($error) {
             $this->logger->info('Failed to log in', ['error' => $error]);
         }
@@ -52,13 +63,8 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/signup', name: 'app_signup')]
-    public function signup(
-        Request $request, 
-        UserPasswordHasherInterface $passwordEncoder, 
-        EntityManagerInterface $entityManager,
-        AuthenticationUtils $authenticationUtils
-    ): Response {
-        $error = $authenticationUtils->getLastAuthenticationError();
+    public function signup(Request $request, ): Response {
+        $error = $this->authenticationUtils->getLastAuthenticationError();
         if ($error) {
             $this->logger->info('Failed to sign up', ['error' => $error]);
         }
@@ -73,14 +79,14 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-                $passwordEncoder->hashPassword(
+                $this->passwordEncoder->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
             );
     
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             $this->loginUser($user);
     
