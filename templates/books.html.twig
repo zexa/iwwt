@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+    <h1>Books</h1>
+    {% for book in books %}
+    <article>
+        <hgroup>
+            <h3>{{ book.name }}</h3>
+            <p>{{ book.author }}</p>
+        </hgroup>
+
+        <small>ISBN: {{ book.isbn }}</small>
+        <br />
+
+        Publication Date: {{ book.publication_date }}
+        <br />
+
+        Genres: {{ book.genres|join(', ') }}
+        <br />
+
+        Number of Copies: {{ book.num_copies }}
+    </article>
+    {% endfor %}
+{% endblock %}
