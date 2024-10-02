@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New book{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let genresList = document.getElementById('genres-list');
+        let addGenreButton = document.getElementById('add-genre');
+
+        let prototype = genresList.dataset.prototype;
+        let index = genresList.children.length;
+
+        addGenreButton.addEventListener('click', function() {
+            console.log(prototype);
+            let newForm = prototype.replace(/__name__/g, index);
+            genresList.insertAdjacentHTML('beforeend', newForm);
+            index++;
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+    {{ form_errors(form) }} {# Display global form errors #}
+
+    {{ form_row(form.title) }}
+
+    {{ form_row(form.author) }}
+
+    {{ form_row(form.isbn) }}
+
+    {{ form_row(form.publication_date) }}
+
+    <label for="genres-list">Genres</label>
+    <div id="genres-list" data-prototype="{{ form_widget(form.genres.vars.prototype)|e('html_attr') }}">
+        {% for genre in form.genres %}
+        {{ form_row(genre) }}
+        {% endfor %}
+    </div>
+    <button type="button" id="add-genre">Add Genre</button>
+
+    {{ form_row(form.copies) }}
+
+    <button type="submit">Add book</button>
+{{ form_end(form) }}
+{% endblock %}
