@@ -7,12 +7,10 @@
     document.addEventListener("DOMContentLoaded", function() {
         let genresList = document.getElementById('genres-list');
         let addGenreButton = document.getElementById('add-genre');
-
         let prototype = genresList.dataset.prototype;
         let index = genresList.children.length;
 
         addGenreButton.addEventListener('click', function() {
-            console.log(prototype);
             let newForm = prototype.replace(/__name__/g, index);
             genresList.insertAdjacentHTML('beforeend', newForm);
             index++;

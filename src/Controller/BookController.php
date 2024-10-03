@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Form\NewBookFormType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class BookController extends AbstractController {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly BookRepository $bookRepository
+        private readonly BookRepository $bookRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -36,6 +38,11 @@ class BookController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->logger->debug('submitting book', [
+                'book' => var_export($book, true),
+                'form' => $form->getData(),
+                'request' => $request->request->all(),
+            ]);
             $this->entityManager->persist($book);
             $this->entityManager->flush();
     

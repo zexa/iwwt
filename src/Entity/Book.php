@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\BookRepository;
@@ -92,7 +94,7 @@ class Book
 
     public function setGenres(array $genres): static
     {
-        $this->genre = $genres;
+        $this->genres = $genres;
 
         return $this;
     }

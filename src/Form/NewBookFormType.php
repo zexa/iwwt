@@ -19,11 +19,13 @@ class NewBookFormType extends AbstractType {
             ->add("publication_date", DateType::class)
             ->add("genres", CollectionType::class, [
                 'entry_type' => TextType::class,
-                'allow_add' => true,  // Allows adding new fields dynamically
-                'allow_delete' => true,  // Allows removing existing fields dynamically
-                'prototype' => true,  // Allows a prototype to be used for new entries
-                'by_reference' => false,  // Ensure proper handling when using collections
-                'label' => false, // Disables the label from being rendered automatically
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'prototype_name' => '__name__',
+                'by_reference' => false,
+                'label' => false,
             ])
             ->add('copies', NumberType::class)
         ;
