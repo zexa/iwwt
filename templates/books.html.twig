@@ -4,19 +4,28 @@
 
 {% block stylesheets %}
 <style>
-.space-down {
-    margin-bottom: 1rem;
-}
 .red {
     border-color: var(--pico-color-red-400);
     color: var(--pico-color-red-400);
 }
+
+.red:hover {
+    border-color: var(--pico-color-red-300);
+    color: var(--pico-color-red-300);
+}
+
 </style>
 {% endblock %}
 
 
 {% block body %}
     <h1>Books</h1>
+    <input
+    type="search"
+    name="search"
+    placeholder="Search"
+    aria-label="Search"
+    />
     {% for book in books %}
     <article>
         <hgroup>
@@ -49,12 +58,12 @@
             </form>
         {% endif %}
     </article>
-    {% endfor %}
+{% endfor %}
 
-    {% if app.user %}
-        <form action="{{ path('app_new_book') }}" method="post">
-            <input type="hidden" name="_method" value="POST">
-            <button type="submit">New Book</button>
-        </form>
-    {% endif %}
+{% if app.user %}
+    <form action="{{ path('app_new_book') }}" method="post">
+        <input type="hidden" name="_method" value="POST">
+        <button type="submit">New Book</button>
+    </form>
+{% endif %}
 {% endblock %}
