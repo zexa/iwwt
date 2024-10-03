@@ -20,20 +20,20 @@
     {% for book in books %}
     <article>
         <hgroup>
-            <h3>{{ book.name }}</h3>
+            <h3>{{ book.title }}</h3>
             <p>{{ book.author }}</p>
         </hgroup>
 
         <strong>ISBN:</strong> {{ book.isbn }}
         <br>
 
-        <strong>Publication Date:</strong> {{ book.publication_date }}
+        <strong>Publication Date:</strong> {{ book.publicationDate|date('Y-m-d') }}
         <br>
 
         <strong>Genres:</strong> {{ book.genres|join(', ') }}
         <br>
 
-        <strong>Number of Copies:</strong> {{ book.num_copies }}
+        <strong>Number of Copies:</strong> {{ book.copies }}
         <br>
 
         {% if app.user %}
