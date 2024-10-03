@@ -31,18 +31,21 @@ this point.
 ## Running the application locally
 
 ```
-docker compose up -d
+docker compose up -d database
 symfony composer install
 symfony server:start
 ```
 
 ## Deployment
 
-I use fly.io for deployments. Flyctl thinks we have a Laravel application if it 
-detects an artisan file, which is why it exists in root.
+I use fly.io for deployments. While flyctl does not directly support symfony,
+it does support laravel. Fly thinks we have a Laravel application if it 
+detects an artisan file, which is why it exists in root. Since the environments
+in which symfony and laravel applications run are very similar, it will be good
+enough.
 
-We use a single file for nginx and php-fpm because it facilitates deployments
-with fly.io.
+We use a single docker image for nginx and php-fpm because it facilitates 
+deployments with fly.io.
 
 Fly.io will handle postgres deployments automatically and will insert the
 correct DATABASE_URL env. You will need to set other envs manually via 
@@ -53,3 +56,10 @@ proper environment, which means that it's easy to make a mistake either by
 adding files that shouldn't be in prod or deploying untested code. This would
 normally be circumvented by having a proper ci/cd pipeline where code would be
 tested and deployed only if tests go through and/or are approved.
+
+After deploying I tested my application, after which I found that after a login
+I'd be redirected back to the login screen. After one of the deployments I 
+received a "Invalid CSRF token." error. I wasted 2 hours not realizing that I
+was deploying from my laptop without first clearing the cache. In hindsight, I
+should've spent some time to set up some CI/CD pipelines so that my deployments
+would be cleaner, but oh well.
