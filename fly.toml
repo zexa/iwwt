@@ -1,2 +1,23 @@
+app = "iwwt"
+primary_region = "waw"
+
 [env]
+  APP_URL = "https://books.zexa.xyz/"
   APP_RUNTIME = '\App\FlySymfonyRuntime'
+  LOG_CHANNEL = "stderr"
+  LOG_LEVEL = "info"
+  LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
+
+[[services]]
+  internal_port = 8080
+  protocol = 'tcp'
+  processes = ["app"]
+
+  [[services.ports]]
+    handlers = ['http']
+    port = 80
+    force_https = true
+
+  [[services.ports]]
+    handlers = ['http', "tls"]
+    port = 443
