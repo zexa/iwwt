@@ -1,5 +1,5 @@
 # iwwt
-[https:://iwwt.zexa.xyz](https:://iwwt.zexa.xyz)
+[https://iwwt.fly.dev/](https://iwwt.fly.dev/)
 
 Interview Task for Wise Team by Augustinas Kalvis.
 
