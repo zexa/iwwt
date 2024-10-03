@@ -14,18 +14,64 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+<main>
+    <form method="post">
+        <h1>Sign in</h1>
+        
+        <div class="form-group">
+            <input 
+                type="email" 
+                placeholder="Email" 
+                name="_username" 
+                id="username" 
+                class="form-control {% if error %}is-invalid{% endif %}" 
+                autocomplete="email" 
+                required 
+                autofocus 
+                {% if error %}
+                aria-invalid="true" 
+                aria-describedby="username-helper"
+                {% endif %}
+            >
+            {% if error %}
+            <small id="username-helper" class="form-text text-danger">
+                {{ error.messageKey }}
+            </small>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <input 
+                type="password" 
+                placeholder="Password" 
+                name="_password" 
+                id="password" 
+                class="form-control {% if error and error.messageKey == 'Invalid credentials.' %}is-invalid{% endif %}" 
+                autocomplete="current-password" 
+                required 
+            >
+        </div>
 
-    <h1>Sign in</h1>
-    <input type="email" placeholder="Email" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-    <input type="password" placeholder="Password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button type="submit">Sign in</button>
+    </form>
+    <a href="/signup">Don't have an account yet?</a>
+</main>
+{% endblock %}
 
-    <button type="submit">Sign in</button>
-</form>
-<a href="/signup">Don't have an account yet?</a>
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const usernameInput = document.getElementById('username');
+        const usernameHelper = document.getElementById('username-helper');
+
+        usernameInput.addEventListener('input', function() {
+            if (usernameHelper) {
+                usernameHelper.remove();
+            }
+            usernameInput.removeAttribute('aria-invalid');
+        });
+    });
+</script>
 {% endblock %}
