@@ -2,7 +2,6 @@ app = "iwwt"
 primary_region = "waw"
 
 [env]
-  APP_URL = "https://books.zexa.xyz/"
   APP_RUNTIME = '\App\FlySymfonyRuntime'
   LOG_CHANNEL = "stderr"
   LOG_LEVEL = "info"
