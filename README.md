@@ -2,19 +2,31 @@
 Interview Task for Wise Team by Augustinas Kalvis.
 
 ## Notes
-Besides simply displaying my skills I used the chance to play around with some 
-technologies, such as PicoCSS for styling frontend. PicoCSS is a css framework
-that prides itself in avoiding classes as much as possible by levaraging 
-semantic html. Figured it would be more than enough for a small CRUD app.
+> Create a web application using the Symfony framework that allows library
+> employees to register new books into the library’s system
 
-I went with twig for since I figured this would be fairly straight forward 
-although I should've went with react to display my skills as well as facilitate
-dynamic rendering. Instead, I was stuck writing basic js to handle
-searches, book rendering, etc.
+I interpret this as registration is required, however, to forbid any random
+users to register to the website I would normally add something like an 
+invitation link.
 
-Book editing and deletion is accessed when the user is logged in.
+I wanted to play around with picoCSS - a css framework that prides itself in 
+avoiding classes as much as possible by levaraging semantic html. Figured it 
+would be more than enough for a small CRUD app.
 
-## Initialization
+Book editing and deletion is accessed available the user is logged in. The 
+frontend handles this by only rendering the edit/remove buttons when the user 
+is logged in, while the backend flat out redirects the user to a login page if
+they try to access pages they have no access to.
+
+> Add pagination to the book list using JavaScript.
+
+This point made me raise some questions. I assume that the purpose was to not
+spend too much of the candidate's time, however, functionally it doesn't make
+sense. What's the point in adding pagination when all of the information is 
+already available in memory? Due to this confusion, I decided not to tackle
+this point.
+
+## Running the application locally
 
 ```
 docker compose up
