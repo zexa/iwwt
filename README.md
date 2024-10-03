@@ -47,3 +47,9 @@ with fly.io.
 Fly.io will handle postgres deployments automatically and will insert the
 correct DATABASE_URL env. You will need to set other envs manually via 
 `fly secrets`.
+
+The deployment with fly.io is quick and dirty. It relies on the user having a
+proper environment, which means that it's easy to make a mistake either by 
+adding files that shouldn't be in prod or deploying untested code. This would
+normally be circumvented by having a proper ci/cd pipeline where code would be
+tested and deployed only if tests go through and/or are approved.
