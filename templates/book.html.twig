@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New book{% endblock %}
+{% block title %}{{ is_editing ? 'Edit' : 'New' }} book{% endblock %}
 
 {% block javascripts %}
 <script>
@@ -41,6 +41,6 @@
 
     {{ form_row(form.copies) }}
 
-    <button type="submit">Add book</button>
+    <button type="submit">{{ is_editing ? 'Update' : 'Add' }} book</button>
 {{ form_end(form) }}
 {% endblock %}

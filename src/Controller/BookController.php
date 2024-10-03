@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Book;
-use App\Form\NewBookFormType;
+use App\Form\BookFormType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -20,7 +20,7 @@ class BookController extends AbstractController {
     ) {
     }
 
-    #[Route(path: '/books', name: 'app_books')]
+    #[Route(path: '/', name: 'app_books')]
     public function books(): Response
     {
         $books = $this->bookRepository->findAll();
@@ -30,29 +30,56 @@ class BookController extends AbstractController {
         ]);
     }
 
-    #[Route(path: '/book/new', name: 'app_new_book')]
+    #[Route(methods: ['GET', 'POST'], path: '/book', name: 'app_new_book')]
     public function newBook(Request $request): Response
     {
         $book = new Book();
-        $form = $this->createForm(NewBookFormType::class, $book);
+        $form = $this->createForm(BookFormType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->logger->debug('submitting book', [
-                'book' => var_export($book, true),
-                'form' => $form->getData(),
-                'request' => $request->request->all(),
-            ]);
             $this->entityManager->persist($book);
             $this->entityManager->flush();
     
             return $this->redirectToRoute('app_books');
         }
 
-        return $this->render('new_book.html.twig', ['form' => $form->createView()]);
+        return $this->render('book.html.twig', [
+            'form' => $form->createView(), 
+            'is_editing' => false,
+        ]);
     }
 
-    #[Route(path: '/book/{bookId}/new', name: 'app_delete_book')]
+    // Note: not very restful as we're not using methods like put or patch, but there seems
+    // to be issues when submitting forms with other methods.
+    #[Route(methods: ['GET', 'POST'], path: '/book/{bookId}', name: 'app_edit_book')]
+    public function editBook(Request $request): Response
+    {
+        $bookId = $request->attributes->get('bookId');
+        $book = $this->bookRepository->find($bookId);
+        $form = $this->createForm(BookFormType::class, $book);
+        $form->handleRequest($request);
+
+        $this->logger->debug('editing book', [
+            'is_submitted' => $form->isSubmitted(),
+            'form_errors' => $form->getErrors(true, false),
+            'book' => $book,
+        ]);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($book);
+            $this->entityManager->flush();
+    
+            return $this->redirectToRoute('app_books');
+        }
+
+        return $this->render('book.html.twig', [
+            'form' => $form->createView(), 
+            'is_editing' => true,
+        ]);
+    }
+
+    #[Route(methods: ['DELETE'], path: '/book/{bookId}', name: 'app_delete_book')]
     public function deleteBook(Request $request): Response
     {
         $bookId = $request->attributes->get('bookId');

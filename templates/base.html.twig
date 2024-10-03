@@ -14,12 +14,12 @@
     </head>
     <body>  
         <header class="container">
-            <a href="/books/">Books</a> |
+            <a href="{{ path('app_books') }}">Books</a> |
             {% if app.user %}
-                <a href="/logout">Logout</a> |
+                <a href="{{ path('app_logout') }}">Logout</a> |
             {% else %}
-                <a href="/login">Login</a> |
-                <a href="/signup">Registration</a> |
+                <a href="{{ path('app_login') }}">Login</a> |
+                <a href="{{ path('app_signup') }}">Registration</a> |
             {% endif %}
         </header>
         <main class="container">
