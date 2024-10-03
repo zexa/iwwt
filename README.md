@@ -30,8 +30,12 @@ this point.
 
 ```
 docker compose up
+symfony composer install
 symfony server:start
 ```
 
 ## Deployment
+
+I used caddy to deploy the application. I chose caddy instead of nginx due to 
+its automatic https features.
 
