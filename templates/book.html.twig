@@ -10,10 +10,39 @@
         let prototype = genresList.dataset.prototype;
         let index = genresList.children.length;
 
+        // Function to add a new genre input
         addGenreButton.addEventListener('click', function() {
-            let newForm = prototype.replace(/__name__/g, index);
-            genresList.insertAdjacentHTML('beforeend', newForm);
+            // Create a new fieldset element
+            let fieldset = document.createElement('fieldset');
+            fieldset.setAttribute('role', 'group');
+            fieldset.classList.add('genre-item');
+
+            // Create a div for the new genre input using the prototype
+            let newGenreInput = document.createElement('div');
+            newGenreInput.innerHTML = prototype.replace(/__name__/g, index);
+            fieldset.appendChild(newGenreInput);
+
+            // Create and append the remove button
+            let removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.classList.add('remove-genre');
+            removeButton.textContent = 'Remove';
+            fieldset.appendChild(removeButton);
+
+            // Append the new fieldset to the genres list
+            genresList.appendChild(fieldset);
             index++;
+        });
+
+        // Delegate the remove action to the genres list
+        genresList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-genre')) {
+                e.preventDefault();
+                let genreItem = e.target.closest('.genre-item');
+                if (genreItem) {
+                    genreItem.remove(); // Remove the genre item
+                }
+            }
         });
     });
 </script>
@@ -34,7 +63,10 @@
     <label for="genres-list">Genres</label>
     <div id="genres-list" data-prototype="{{ form_widget(form.genres.vars.prototype)|e('html_attr') }}">
         {% for genre in form.genres %}
-        {{ form_row(genre) }}
+            <fieldset role="group" class="genre-item">
+                {{ form_row(genre) }}
+                <button type="button" class="remove-genre">Remove</button>
+            </fieldset>
         {% endfor %}
     </div>
     <button type="button" id="add-genre">Add Genre</button>
