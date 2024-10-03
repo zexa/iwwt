@@ -31,7 +31,7 @@ this point.
 ## Running the application locally
 
 ```
-docker compose up
+docker compose up -d
 symfony composer install
 symfony server:start
 ```
@@ -42,5 +42,8 @@ I use fly.io for deployments. Flyctl thinks we have a Laravel application if it
 detects an artisan file, which is why it exists in root.
 
 We use a single file for nginx and php-fpm because it facilitates deployments
-with fly.
+with fly.io.
 
+Fly.io will handle postgres deployments automatically and will insert the
+correct DATABASE_URL env. You will need to set other envs manually via 
+`fly secrets`.
