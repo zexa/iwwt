@@ -1,4 +1,6 @@
 # iwwt
+[https:://iwwt.zexa.xyz](https:://iwwt.zexa.xyz)
+
 Interview Task for Wise Team by Augustinas Kalvis.
 
 ## Notes
@@ -36,6 +38,9 @@ symfony server:start
 
 ## Deployment
 
-I used caddy to deploy the application. I chose caddy instead of nginx due to 
-its automatic https features.
+I use fly.io for deployments. Flyctl thinks we have a Laravel application if it 
+detects an artisan file, which is why it exists in root.
+
+We use a single file for nginx and php-fpm because it facilitates deployments
+with fly.
 
