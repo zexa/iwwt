@@ -51,4 +51,14 @@ class BookController extends AbstractController {
 
         return $this->render('new_book.html.twig', ['form' => $form->createView()]);
     }
+
+    #[Route(path: '/book/{bookId}/new', name: 'app_delete_book')]
+    public function deleteBook(Request $request): Response
+    {
+        $bookId = $request->attributes->get('bookId');
+        $book = $this->bookRepository->find($bookId);
+        $this->entityManager->remove($book);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('app_books');
+    }
 }

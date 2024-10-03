@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "iwwt",
+      "connectString": "postgresql://app:!ChangeMe!@127.0.0.1:58631/app"
+    }
+  ]
+}
