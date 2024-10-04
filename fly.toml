@@ -1,5 +1,6 @@
 app = "iwwt"
 primary_region = "waw"
+console_command = "bin/console cache:warmup --env=prod"
 
 [env]
   APP_RUNTIME = '\App\FlySymfonyRuntime'
