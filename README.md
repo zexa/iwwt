@@ -33,10 +33,18 @@ this point.
 ```
 docker compose up -d database
 symfony composer install
+bin/console doctrine:database:create
+bin/console doctrine:migrations:execute
 symfony server:start
 ```
 
 ## Deployment
+
+````
+fly deploy
+fly ssh console
+bin/console doctrine:migrations:execute
+```
 
 I use fly.io for deployments. While flyctl does not directly support symfony,
 it does support laravel. Fly thinks we have a Laravel application if it 

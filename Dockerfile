@@ -20,7 +20,7 @@ WORKDIR /var/www/symfony
 # Copy configuration files
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN echo "max_input_vars=1000" >> /usr/local/etc/php/conf.d/docker-php-max-input-vars.ini
+RUN echo "max_input_vars = 1000" >> /usr/local/etc/php/conf.d/docker-php-max-input-vars.ini
 
 # Expose ports
 EXPOSE 9000
