@@ -1,50 +1,69 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}{{ is_editing ? 'Edit' : 'New' }} book{% endblock %}
 
 {% block javascripts %}
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let genresList = document.getElementById('genres-list');
-        let addGenreButton = document.getElementById('add-genre');
-        let prototype = genresList.dataset.prototype;
-        let index = genresList.children.length;
+document.addEventListener("DOMContentLoaded", function() {
+    let genresList = document.getElementById('genres-list');
+    let addGenreButton = document.getElementById('add-genre');
+    let prototype = genresList.dataset.prototype;
+    let index = genresList.children.length;
 
-        // Function to add a new genre input
-        addGenreButton.addEventListener('click', function() {
-            // Create a new fieldset element
-            let fieldset = document.createElement('fieldset');
-            fieldset.setAttribute('role', 'group');
-            fieldset.classList.add('genre-item');
+    function clearError(input) {
+        const helperId = input.getAttribute('aria-describedby');
+        const helperText = document.getElementById(helperId);
+        if (helperText) {
+            helperText.innerHTML = '';
+        }
+        input.removeAttribute('aria-invalid');
+    }
 
-            // Create a div for the new genre input using the prototype
-            let newGenreInput = document.createElement('div');
-            newGenreInput.innerHTML = prototype.replace(/__name__/g, index);
-            fieldset.appendChild(newGenreInput);
+    // Function to add a new genre input
+    addGenreButton.addEventListener('click', function() {
+        // Create a new fieldset element
+        let fieldset = document.createElement('fieldset');
+        fieldset.setAttribute('role', 'group');
+        fieldset.classList.add('genre-item');
 
-            // Create and append the remove button
-            let removeButton = document.createElement('button');
-            removeButton.type = 'button';
-            removeButton.classList.add('remove-genre');
-            removeButton.textContent = 'Remove';
-            fieldset.appendChild(removeButton);
+        // Create a div for the new genre input using the prototype
+        let newGenreInput = document.createElement('div');
+        newGenreInput.innerHTML = prototype.replace(/__name__/g, index);
+        fieldset.appendChild(newGenreInput);
 
-            // Append the new fieldset to the genres list
-            genresList.appendChild(fieldset);
-            index++;
-        });
+        // Create and append the remove button
+        let removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('remove-genre');
+        removeButton.textContent = 'Remove';
+        fieldset.appendChild(removeButton);
 
-        // Delegate the remove action to the genres list
-        genresList.addEventListener('click', function(e) {
-            if (e.target.classList.contains('remove-genre')) {
-                e.preventDefault();
-                let genreItem = e.target.closest('.genre-item');
-                if (genreItem) {
-                    genreItem.remove(); // Remove the genre item
-                }
-            }
+        // Append the new fieldset to the genres list
+        genresList.appendChild(fieldset);
+        index++;
+
+        // Add event listener for clearing errors
+        let inputs = fieldset.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', () => clearError(input));
         });
     });
+
+    // Delegate the remove action to the genres list
+    genresList.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-genre')) {
+            e.preventDefault();
+            let genreItem = e.target.closest('.genre-item');
+            if (genreItem) {
+                genreItem.remove(); // Remove the genre item
+            }
+        }
+    });
+
+    // Add event listeners for clearing errors on existing inputs
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+        input.addEventListener('input', () => clearError(input));
+    });
+});
 </script>
 {% endblock %}
 
@@ -52,26 +71,116 @@
 {{ form_start(form) }}
     {{ form_errors(form) }} {# Display global form errors #}
 
-    {{ form_row(form.title) }}
+    <div class="form-group">
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title, {
+            'attr': {
+                'aria-describedby': 'title-helper',
+                'aria-invalid': form.title.vars.errors|length > 0 ? 'true' : null
+            }
+        }) }}
+        <small id="title-helper" class="form-text text-danger">
+            {% if form.title.vars.errors|length > 0 %}
+                {% for error in form.title.vars.errors %}
+                    <small>{{ error.message }}</small><br>
+                {% endfor %}
+            {% endif %}
+        </small>
+    </div>
 
-    {{ form_row(form.author) }}
+    <div class="form-group">
+        {{ form_label(form.author) }}
+        {{ form_widget(form.author, {
+            'attr': {
+                'aria-describedby': 'author-helper',
+                'aria-invalid': form.author.vars.errors|length > 0 ? 'true' : null
+            }
+        }) }}
+        <small id="author-helper" class="form-text text-danger">
+            {% if form.author.vars.errors|length > 0 %}
+                {% for error in form.author.vars.errors %}
+                    <small>{{ error.message }}</small><br>
+                {% endfor %}
+            {% endif %}
+        </small>
+    </div>
 
-    {{ form_row(form.isbn) }}
+    <div class="form-group">
+        {{ form_label(form.isbn) }}
+        {{ form_widget(form.isbn, {
+            'attr': {
+                'aria-describedby': 'isbn-helper',
+                'aria-invalid': form.isbn.vars.errors|length > 0 ? 'true' : null
+            }
+        }) }}
+        <small id="isbn-helper" class="form-text text-danger">
+            {% if form.isbn.vars.errors|length > 0 %}
+                {% for error in form.isbn.vars.errors %}
+                    <small>{{ error.message }}</small><br>
+                {% endfor %}
+            {% endif %}
+        </small>
+    </div>
 
-    {{ form_row(form.publication_date) }}
+    <div class="form-group">
+        {{ form_label(form.publication_date) }}
+        {{ form_widget(form.publication_date, {
+            'attr': {
+                'aria-describedby': 'publication-date-helper',
+                'aria-invalid': form.publication_date.vars.errors|length > 0 ? 'true' : null
+            }
+        }) }}
+        <small id="publication-date-helper" class="form-text text-danger">
+            {% if form.publication_date.vars.errors|length > 0 %}
+                {% for error in form.publication_date.vars.errors %}
+                    <small>{{ error.message }}</small><br>
+                {% endfor %}
+            {% endif %}
+        </small>
+    </div>
 
     <label for="genres-list">Genres</label>
     <div id="genres-list" data-prototype="{{ form_widget(form.genres.vars.prototype)|e('html_attr') }}">
         {% for genre in form.genres %}
             <fieldset role="group" class="genre-item">
-                {{ form_row(genre) }}
+                <div class="form-group">
+                    {{ form_label(genre) }}
+                    {{ form_widget(genre, {
+                        'attr': {
+                            'aria-describedby': 'genre-' ~ loop.index ~ '-helper',
+                            'aria-invalid': genre.vars.errors|length > 0 ? 'true' : null
+                        }
+                    }) }}
+                    <small id="genre-{{ loop.index }}-helper" class="form-text text-danger">
+                        {% if genre.vars.errors|length > 0 %}
+                            {% for error in genre.vars.errors %}
+                                <small>{{ error.message }}</small><br>
+                            {% endfor %}
+                        {% endif %}
+                    </small>
+                </div>
                 <button type="button" class="remove-genre">Remove</button>
             </fieldset>
         {% endfor %}
     </div>
     <button type="button" id="add-genre">Add Genre</button>
 
-    {{ form_row(form.copies) }}
+    <div class="form-group">
+        {{ form_label(form.copies) }}
+        {{ form_widget(form.copies, {
+            'attr': {
+                'aria-describedby': 'copies-helper',
+                'aria-invalid': form.copies.vars.errors|length > 0 ? 'true' : null
+            }
+        }) }}
+        <small id="copies-helper" class="form-text text-danger">
+            {% if form.copies.vars.errors|length > 0 %}
+                {% for error in form.copies.vars.errors %}
+                    <small>{{ error.message }}</small><br>
+                {% endfor %}
+            {% endif %}
+        </small>
+    </div>
 
     <button type="submit">{{ is_editing ? 'Update' : 'Add' }} book</button>
 {{ form_end(form) }}
