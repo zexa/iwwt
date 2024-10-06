@@ -21,7 +21,7 @@ class BookController extends AbstractController {
     }
 
     #[Route(path: '/', name: 'app_books')]
-    public function books(): Response
+    public function listBooks(): Response
     {
         $books = $this->bookRepository->findAll();
 
@@ -30,7 +30,7 @@ class BookController extends AbstractController {
         ]);
     }
 
-    #[Route(methods: ['GET', 'POST'], path: '/book', name: 'app_new_book')]
+    #[Route(methods: ['POST'], path: '/book', name: 'app_new_book')]
     public function newBook(Request $request): Response
     {
         $book = new Book();
@@ -50,26 +50,27 @@ class BookController extends AbstractController {
         ]);
     }
 
-    // Note: not very restful as we're not using methods like put or patch, but there seems
-    // to be issues when submitting forms with other methods.
-    #[Route(methods: ['GET', 'POST'], path: '/book/{bookId}', name: 'app_edit_book')]
-    public function editBook(Request $request): Response
+    #[Route(methods: ['GET', 'PUT'], path: '/book/{bookId}', name: 'app_edit_book')]
+    public function editBook(Request $request, int $bookId): Response
     {
-        $bookId = $request->attributes->get('bookId');
         $book = $this->bookRepository->find($bookId);
+
+        if (!$book) {
+            throw $this->createNotFoundException('Book not found.');
+        }
+
         $form = $this->createForm(BookFormType::class, $book);
         $form->handleRequest($request);
 
-        $this->logger->debug('editing book', [
+        $this->logger->debug('Editing book', [
             'is_submitted' => $form->isSubmitted(),
             'form_errors' => $form->getErrors(true, false),
             'book' => $book,
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($book);
-            $this->entityManager->flush();
-    
+            $this->entityManager->flush(); // No need to persist as the entity is already managed
+
             return $this->redirectToRoute('app_books');
         }
 
@@ -80,12 +81,20 @@ class BookController extends AbstractController {
     }
 
     #[Route(methods: ['DELETE'], path: '/book/{bookId}', name: 'app_delete_book')]
-    public function deleteBook(Request $request): Response
+    public function deleteBook(int $bookId): Response
     {
-        $bookId = $request->attributes->get('bookId');
         $book = $this->bookRepository->find($bookId);
+
+        if (!$book) {
+            throw $this->createNotFoundException('Book not found.');
+        }
+
         $this->entityManager->remove($book);
         $this->entityManager->flush();
+
+        // Optionally, add a flash message for user feedback
+        $this->addFlash('success', 'Book deleted successfully.');
+
         return $this->redirectToRoute('app_books');
     }
 }

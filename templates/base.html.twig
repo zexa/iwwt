@@ -13,15 +13,19 @@
         {% endblock %}
     </head>
     <body>  
-        <header class="container">
-            <a href="{{ path('app_books') }}">Books</a> |
-            {% if app.user %}
-                <a href="{{ path('app_logout') }}">Logout</a> |
-            {% else %}
-                <a href="{{ path('app_login') }}">Login</a> |
-                <a href="{{ path('app_signup') }}">Registration</a> |
-            {% endif %}
-        </header>
+        <nav class="container">
+            <ul><li><strong>iwwt</strong></li></ul>
+            <ul>
+                <li><a href="{{ path('app_books') }}">Books</a></li>
+                {% if app.user %}
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ path('app_login') }}">Login</a></li>
+                    <li><a href="{{ path('app_signup') }}">Registration</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
         <main class="container">
             {% block body %}{% endblock %}
         </main>
