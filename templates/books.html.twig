@@ -53,8 +53,7 @@
                     <button class="outline" type="submit">Edit</button>
                 </form>
 
-                <form action="{{ path('app_delete_book', {'bookId': book.id}) }}" method="DELETE" onsubmit="return confirm('Are you sure you want to delete this book?');">
-                    <input type="hidden" name="_method" value="DELETE">
+                <form action="{{ path('app_delete_book', {'bookId': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this book?');">
                     <button class="outline red" type="submit">Remove</button>
                 </form>
             {% endif %}

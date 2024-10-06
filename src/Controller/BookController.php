@@ -50,7 +50,9 @@ class BookController extends AbstractController {
         ]);
     }
 
-    #[Route(methods: ['GET', 'PUT'], path: '/book/{bookId}', name: 'app_edit_book')]
+    // PUT/PATCH methods arent used here because client side forms do not support other methods
+    // without method overloading
+    #[Route(path: '/book/{bookId}/edit', name: 'app_edit_book')]
     public function editBook(Request $request, int $bookId): Response
     {
         $book = $this->bookRepository->find($bookId);
@@ -80,7 +82,9 @@ class BookController extends AbstractController {
         ]);
     }
 
-    #[Route(methods: ['DELETE'], path: '/book/{bookId}', name: 'app_delete_book')]
+    // DELETE method isnt used here because client side forms do not support other methods
+    // without method overloading
+    #[Route(path: '/book/{bookId}/delete', name: 'app_delete_book')]
     public function deleteBook(int $bookId): Response
     {
         $book = $this->bookRepository->find($bookId);
@@ -91,9 +95,6 @@ class BookController extends AbstractController {
 
         $this->entityManager->remove($book);
         $this->entityManager->flush();
-
-        // Optionally, add a flash message for user feedback
-        $this->addFlash('success', 'Book deleted successfully.');
 
         return $this->redirectToRoute('app_books');
     }
