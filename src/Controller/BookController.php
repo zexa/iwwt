@@ -69,7 +69,6 @@ class BookController extends AbstractController {
 
         $this->logger->debug('Editing book', [
             'is_submitted' => $form->isSubmitted(),
-            'form_errors' => $form->getErrors(true, false),
             'book' => $book,
         ]);
 
