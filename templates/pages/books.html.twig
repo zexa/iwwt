@@ -39,6 +39,107 @@
             });
         });
     });
+
+    const submitBook = async (event) => {
+        event.preventDefault();
+
+        console.log("submitBook");
+
+        const modal = document.getElementById('book-form');
+        if (!modal) return;
+
+        const form = modal.querySelector('form'); // Assuming your form has a <form> tag
+        const formData = new FormData(form); // Collect form data
+
+
+        try {
+            const response = await fetch(form.action, {
+                method: form.method, // e.g., POST or PUT
+                body: formData,
+            });
+
+            // Check if the response is OK
+            if (response.ok) {
+                // Handle success, maybe close the modal or refresh the book list
+                console.log('Book submitted successfully');
+                modal.close(); // Close the modal if needed
+            } else {
+                // If not OK, re-render the form
+                const html = await response.text();
+                const div = modal.querySelector('div');
+                div.innerHTML = html; // Re-render the form
+            }
+        } catch (error) {
+            console.error('Error submitting the book:', error);
+        }
+    };
+
+    const newBook = (event) => {
+        console.log("newBook");
+        const modal = document.getElementById('book-form');
+        if (!modal) return;
+        const div = modal.querySelector('div');
+        fetch(`/book`)
+            .then(response => response.text())
+            .then(html => {
+                div.innerHTML = html;
+                modal.showModal();
+            })
+            .catch(error => console.error('Error loading form:', error));
+    };
+
+        function clearError(input) {
+        const helperId = input.getAttribute('aria-describedby');
+        const helperText = document.getElementById(helperId);
+        if (helperText) {
+            helperText.innerHTML = '';
+        }
+        input.removeAttribute('aria-invalid');
+    }
+
+    const addGenre = () => {
+        let genresList = document.getElementById('genres-list');
+        let addGenreButton = document.getElementById('add-genre');
+        let prototype = genresList.dataset.prototype;
+        let index = genresList.children.length;
+
+        // Create a new fieldset element
+        let fieldset = document.createElement('fieldset');
+        fieldset.setAttribute('role', 'group');
+        fieldset.classList.add('genre-item');
+
+        // Create a div for the new genre input using the prototype
+        let newGenreInput = document.createElement('div');
+        newGenreInput.innerHTML = prototype.replace(/__name__/g, index);
+        fieldset.appendChild(newGenreInput);
+
+        // Create and append the remove button
+        let removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('remove-genre');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = function(e) {
+            e.preventDefault();
+            fieldset.remove();
+        };
+
+        fieldset.appendChild(removeButton);
+
+        // Append the new fieldset to the genres list
+        genresList.appendChild(fieldset);
+        index++;
+
+        // Add event listener for clearing errors
+        let inputs = fieldset.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', () => clearError(input));
+        });
+    };
+
+    // Add event listeners for clearing errors on existing inputs
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+        input.addEventListener('input', () => clearError(input));
+    });
 </script>
 {% endblock %}
 
@@ -87,19 +188,19 @@
     </div>
 
     {% if app.user %}
-    <button type="submit" data-target="new-book" onclick="toggleModal(event)">New Book</button>
-    <dialog id="new-book">
+    <button type="submit" onclick="newBook(event)">New Book</button>
+    <dialog id="book-form">
         <article>
             <header>
                 <button
                     aria-label="Close"
                     rel="prev"
-                    data-target="new-book"
+                    data-target="book-form"
                     onclick="toggleModal(event)"
                 ></button>
                 <p><strong>New Book</strong></p>
             </header>
-            {% include 'components/book_form.html.twig' with {'is_editing': false, 'form': new_book_form} %}
+            <div></div>
         </article>
     </dialog>
     {% endif %}

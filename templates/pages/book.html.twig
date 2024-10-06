@@ -1,3 +1,0 @@
-{% extends 'base.html.twig' %}
-{% block title %}{{ is_editing ? 'Edit' : 'New' }} book{% endblock %}
-{% include 'components/book_form.html.twig' with {'is_editing': is_editing, 'form': form} %}

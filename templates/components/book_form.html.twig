@@ -1,73 +1,5 @@
-
-{% block javascripts %}
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    let genresList = document.getElementById('genres-list');
-    let addGenreButton = document.getElementById('add-genre');
-    let prototype = genresList.dataset.prototype;
-    let index = genresList.children.length;
-
-    function clearError(input) {
-        const helperId = input.getAttribute('aria-describedby');
-        const helperText = document.getElementById(helperId);
-        if (helperText) {
-            helperText.innerHTML = '';
-        }
-        input.removeAttribute('aria-invalid');
-    }
-
-    // Function to add a new genre input
-    addGenreButton.addEventListener('click', function() {
-        // Create a new fieldset element
-        let fieldset = document.createElement('fieldset');
-        fieldset.setAttribute('role', 'group');
-        fieldset.classList.add('genre-item');
-
-        // Create a div for the new genre input using the prototype
-        let newGenreInput = document.createElement('div');
-        newGenreInput.innerHTML = prototype.replace(/__name__/g, index);
-        fieldset.appendChild(newGenreInput);
-
-        // Create and append the remove button
-        let removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.classList.add('remove-genre');
-        removeButton.textContent = 'Remove';
-        fieldset.appendChild(removeButton);
-
-        // Append the new fieldset to the genres list
-        genresList.appendChild(fieldset);
-        index++;
-
-        // Add event listener for clearing errors
-        let inputs = fieldset.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('input', () => clearError(input));
-        });
-    });
-
-    // Delegate the remove action to the genres list
-    genresList.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-genre')) {
-            e.preventDefault();
-            let genreItem = e.target.closest('.genre-item');
-            if (genreItem) {
-                genreItem.remove(); // Remove the genre item
-            }
-        }
-    });
-
-    // Add event listeners for clearing errors on existing inputs
-    document.querySelectorAll('input, select, textarea').forEach(input => {
-        input.addEventListener('input', () => clearError(input));
-    });
-});
-</script>
-{% endblock %}
-
-{% block body %}
 {{ form_start(form) }}
-    {{ form_errors(form) }} {# Display global form errors #}
+    {{ form_errors(form) }}
 
     <div class="form-group">
         {{ form_label(form.title) }}
@@ -161,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </fieldset>
         {% endfor %}
     </div>
-    <button type="button" id="add-genre">Add Genre</button>
+    <button type="button" onclick="addGenre()">Add Genre</button>
 
     <div class="form-group">
         {{ form_label(form.copies) }}
@@ -180,6 +112,5 @@ document.addEventListener("DOMContentLoaded", function() {
         </small>
     </div>
 
-    <button type="submit">{{ is_editing ? 'Update' : 'Add' }} book</button>
+    <button onclick="submitBook">{{ is_editing ? 'Update' : 'Add' }} book</button>
 {{ form_end(form) }}
-{% endblock %}

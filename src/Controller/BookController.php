@@ -33,7 +33,7 @@ class BookController extends AbstractController {
         ]);
     }
 
-    #[Route(methods: ['POST'], path: '/book', name: 'app_new_book')]
+    #[Route(path: '/book', name: 'app_new_book')]
     public function newBook(Request $request): Response
     {
         $book = new Book();
@@ -47,7 +47,7 @@ class BookController extends AbstractController {
             return new Response('OK', Response::HTTP_OK);
         }
 
-        return $this->render('pages/book.html.twig', [
+        return $this->render('components/book_form.html.twig', [
             'form' => $form->createView(), 
             'is_editing' => false,
         ]);
@@ -77,7 +77,7 @@ class BookController extends AbstractController {
             return new Response('OK', Response::HTTP_OK);
         }
 
-        return $this->render('pages/book.html.twig', [
+        return $this->render('components/book_form.html.twig', [
             'form' => $form->createView(), 
             'is_editing' => true,
         ]);
