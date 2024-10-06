@@ -27,7 +27,7 @@ class BookController extends AbstractController {
 
         $newBookForm = $form = $this->createForm(BookFormType::class);
 
-        return $this->render('books.html.twig', [
+        return $this->render('pages/books.html.twig', [
             'books' => $books,
             'new_book_form' => $newBookForm,
         ]);
@@ -47,7 +47,7 @@ class BookController extends AbstractController {
             return $this->redirectToRoute('app_books');
         }
 
-        return $this->render('book.html.twig', [
+        return $this->render('pages/book.html.twig', [
             'form' => $form->createView(), 
             'is_editing' => false,
         ]);
@@ -79,7 +79,7 @@ class BookController extends AbstractController {
             return $this->redirectToRoute('app_books');
         }
 
-        return $this->render('book.html.twig', [
+        return $this->render('pages/book.html.twig', [
             'form' => $form->createView(), 
             'is_editing' => true,
         ]);

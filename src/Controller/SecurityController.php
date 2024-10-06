@@ -40,7 +40,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_books');
         }
 
-        return $this->render('security/login.html.twig', [
+        return $this->render('pages/login.html.twig', [
             'error' => $error,
         ]);
     }
@@ -82,7 +82,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('security/signup.html.twig', [
+        return $this->render('pages/signup.html.twig', [
             'error' => $error,
             'form' => $form->createView(),
         ]);

@@ -87,51 +87,7 @@
     </div>
 
     {% if app.user %}
-        <form action="{{ path('app_new_book') }}" method="post">
-            <input type="hidden" name="_method" value="POST">
-            <button type="submit">New Book</button>
-        </form>
-    {% endif %}
-
-    <section id="modal">
-        <h2>Modal</h2>
-        <button class="contrast" data-target="new-book" onclick="toggleModal(event)">
-          Launch demo modal
-        </button>
-    </section>
-
-    <!-- Modal example -->
-    <dialog id="modal-example">
-      <article>
-        <header>
-          <button
-            aria-label="Close"
-            rel="prev"
-            data-target="modal-example"
-            onclick="toggleModal(event)"
-          ></button>
-          <h3>Confirm your action!</h3>
-        </header>
-        <p>
-          Cras sit amet maximus risus. Pellentesque sodales odio sit amet augue finibus
-          pellentesque. Nullam finibus risus non semper euismod.
-        </p>
-        <footer>
-          <button
-            role="button"
-            class="secondary"
-            data-target="modal-example"
-            onclick="toggleModal(event)"
-          >
-            Cancel</button
-          ><button autofocus data-target="modal-example" onclick="toggleModal(event)">
-            Confirm
-          </button>
-        </footer>
-      </article>
-    </dialog>
-    <!-- ./ Modal example -->
-
+    <button type="submit" data-target="new-book" onclick="toggleModal(event)">New Book</button>
     <dialog id="new-book">
         <article>
             <header>
@@ -146,5 +102,5 @@
             {% include 'components/book_form.html.twig' with {'is_editing': false, 'form': new_book_form} %}
         </article>
     </dialog>
-
+    {% endif %}
 {% endblock %}
