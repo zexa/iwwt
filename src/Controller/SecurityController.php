@@ -19,24 +19,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    private LoggerInterface $logger;
-    private TokenStorageInterface $tokenStorage;
-    private UserPasswordHasherInterface $passwordEncoder;
-    private EntityManagerInterface $entityManager;
-    private AuthenticationUtils $authenticationUtils;
-
     public function __construct(
-        LoggerInterface $logger, 
-        TokenStorageInterface $tokenStorage, 
-        UserPasswordHasherInterface $passwordEncoder, 
-        EntityManagerInterface $entityManager,
-        AuthenticationUtils $authenticationUtils
+        private readonly LoggerInterface $logger, 
+        private readonly TokenStorageInterface $tokenStorage, 
+        private readonly UserPasswordHasherInterface $passwordEncoder, 
+        private readonly EntityManagerInterface $entityManager,
+        private readonly AuthenticationUtils $authenticationUtils
     ) {
-        $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->entityManager = $entityManager;
-        $this->authenticationUtils = $authenticationUtils;
     }
 
     #[Route(path: '/login', name: 'app_login')]
