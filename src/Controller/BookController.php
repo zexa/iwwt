@@ -44,7 +44,7 @@ class BookController extends AbstractController {
             $this->entityManager->persist($book);
             $this->entityManager->flush();
     
-            return $this->redirectToRoute('app_books');
+            return new Response('OK', Response::HTTP_OK);
         }
 
         return $this->render('pages/book.html.twig', [
@@ -73,9 +73,8 @@ class BookController extends AbstractController {
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush(); // No need to persist as the entity is already managed
-
-            return $this->redirectToRoute('app_books');
+            $this->entityManager->flush();
+            return new Response('OK', Response::HTTP_OK);
         }
 
         return $this->render('pages/book.html.twig', [
