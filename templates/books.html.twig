@@ -17,6 +17,31 @@
 </style>
 {% endblock %}
 
+{% block javascripts %}
+<script src="modal.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('book-search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const books = document.querySelectorAll('#books-list article');
+            
+            books.forEach(book => {
+                const title = book.querySelector('.book-title').textContent.toLowerCase();
+                const author = book.querySelector('.book-author').textContent.toLowerCase();
+                const isbn = book.querySelector('.book-isbn').textContent;
+                
+                if (title.includes(searchTerm) || author.includes(searchTerm) || isbn.includes(searchTerm)) {
+                    book.style.display = 'block';
+                    return;
+                }
+
+                book.style.display = 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}
+
 {% block body %}
     <h1>Books</h1>
     <input
@@ -67,28 +92,59 @@
             <button type="submit">New Book</button>
         </form>
     {% endif %}
-{% endblock %}
 
-{% block javascripts %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('book-search').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const books = document.querySelectorAll('#books-list article');
-            
-            books.forEach(book => {
-                const title = book.querySelector('.book-title').textContent.toLowerCase();
-                const author = book.querySelector('.book-author').textContent.toLowerCase();
-                const isbn = book.querySelector('.book-isbn').textContent;
-                
-                if (title.includes(searchTerm) || author.includes(searchTerm) || isbn.includes(searchTerm)) {
-                    book.style.display = 'block';
-                    return;
-                }
+    <section id="modal">
+        <h2>Modal</h2>
+        <button class="contrast" data-target="new-book" onclick="toggleModal(event)">
+          Launch demo modal
+        </button>
+    </section>
 
-                book.style.display = 'none';
-            });
-        });
-    });
-</script>
+    <!-- Modal example -->
+    <dialog id="modal-example">
+      <article>
+        <header>
+          <button
+            aria-label="Close"
+            rel="prev"
+            data-target="modal-example"
+            onclick="toggleModal(event)"
+          ></button>
+          <h3>Confirm your action!</h3>
+        </header>
+        <p>
+          Cras sit amet maximus risus. Pellentesque sodales odio sit amet augue finibus
+          pellentesque. Nullam finibus risus non semper euismod.
+        </p>
+        <footer>
+          <button
+            role="button"
+            class="secondary"
+            data-target="modal-example"
+            onclick="toggleModal(event)"
+          >
+            Cancel</button
+          ><button autofocus data-target="modal-example" onclick="toggleModal(event)">
+            Confirm
+          </button>
+        </footer>
+      </article>
+    </dialog>
+    <!-- ./ Modal example -->
+
+    <dialog id="new-book">
+        <article>
+            <header>
+                <button
+                    aria-label="Close"
+                    rel="prev"
+                    data-target="new-book"
+                    onclick="toggleModal(event)"
+                ></button>
+                <p><strong>New Book</strong></p>
+            </header>
+            {% include 'components/book_form.html.twig' with {'is_editing': false, 'form': new_book_form} %}
+        </article>
+    </dialog>
+
 {% endblock %}

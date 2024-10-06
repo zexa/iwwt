@@ -25,8 +25,11 @@ class BookController extends AbstractController {
     {
         $books = $this->bookRepository->findAll();
 
+        $newBookForm = $form = $this->createForm(BookFormType::class);
+
         return $this->render('books.html.twig', [
             'books' => $books,
+            'new_book_form' => $newBookForm,
         ]);
     }
 
