@@ -49,7 +49,7 @@ symfony server:start
 
 ## Deployment
 
-````
+```
 fly deploy
 ```
 
