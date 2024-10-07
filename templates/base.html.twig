@@ -14,9 +14,8 @@
     </head>
     <body>  
         <nav class="container">
-            <ul><li><strong>iwwt</strong></li></ul>
+            <ul><li><strong><a href="{{ path('app_index') }}">iwwt</strong></li></ul>
             <ul>
-                <li><a href="{{ path('app_books') }}">Books</a></li>
                 {% if app.user %}
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 {% else %}
