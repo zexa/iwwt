@@ -114,6 +114,6 @@ class BookController extends AbstractController {
         $this->entityManager->remove($book);
         $this->entityManager->flush();
 
-        return new Response('OK', Response::HTTP_OK);
+        return $this->redirectToRoute('app_index');
     }
 }
