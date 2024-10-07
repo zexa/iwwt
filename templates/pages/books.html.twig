@@ -40,17 +40,22 @@
         });
     });
 
-    const refreshBooks = () => {
+    const refreshBooks = (callback) => {
         const bookList = document.getElementById("books-list");
         fetch("{{ path('app_books') }}")
             .then((response) => response.text())
             .then((text) => {
                 bookList.innerHTML = text;
+                callback()
             });
     };
 
     const submitBook = (event) => {
         event.preventDefault();
+        const button = event.target;
+        button.setAttribute('aria-busy', 'true');
+        button.setAttribute('aria-label', 'Please wait…');
+
         const modal = document.getElementById('book-form');
         if (!modal) return;
 
@@ -63,8 +68,12 @@
             .then((response) => response.text())
             .then((text) => {
                 if (text === 'OK') {
-                    refreshBooks();
-                    modal.close();
+                    refreshBooks(() => {
+                        button.setAttribute('aria-busy', null);
+                        button.setAttribute('aria-label', null);
+                        modal.close();
+                    });
+
                     return;
                 }
 
@@ -74,6 +83,10 @@
     };
 
     const newBook = (event, id) => {
+        const button = event.target;
+        button.setAttribute('aria-busy', 'true');
+        button.setAttribute('aria-label', 'Please wait…');
+
         const modal = document.getElementById('book-form');
         if (!modal) return;
         const div = modal.querySelector('div');
@@ -92,6 +105,8 @@
             .then(response => response.text())
             .then(html => {
                 div.innerHTML = html;
+                button.setAttribute('aria-busy', null);
+                button.setAttribute('aria-label', null);
                 modal.showModal();
             })
             .catch(error => console.error('Error loading form:', error));
