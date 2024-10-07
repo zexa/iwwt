@@ -66,12 +66,18 @@
             });
     };
 
-    const newBook = (event) => {
+    const newBook = (event, id) => {
         console.log("newBook");
         const modal = document.getElementById('book-form');
         if (!modal) return;
         const div = modal.querySelector('div');
-        fetch(`/book`)
+
+        let url = "/book"
+        if (id) {
+            url = `/book/${id}/edit`;
+        }
+
+        fetch(url)
             .then(response => response.text())
             .then(html => {
                 div.innerHTML = html;
@@ -166,10 +172,8 @@
 
             {% if app.user %}
                 <hr>
-                <form action="{{ path('app_edit_book', {'bookId': book.id}) }}" method="PUT">
-                    <input type="hidden" name="_method" value="PUT">
-                    <button class="outline" type="submit">Edit</button>
-                </form>
+                <button class="outline" type="submit" onclick="newBook(event, '{{ book.id }}')">Edit Book</button>
+
 
                 <form action="{{ path('app_delete_book', {'bookId': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this book?');">
                     <button class="outline red" type="submit">Remove</button>
