@@ -5,15 +5,18 @@ Interview Task for Wise Team by Augustinas Kalvis.
 
 ## Notes
 > Code style issues
+
 Normally I'd set up some linter like php-cs-fixer and phpstand to highlight
 any mistakes.
 
 > Where are the tests?
+
 I did not want to write unit tests for a single assertion that entityManager
 was called. Normally we'd split Controllers from Services, but this app does
 not have enough business logic to merit it.
 
 > Add pagination to the book list using JavaScript.
+
 This point made me raise some questions. I assume that the purpose was to not
 spend too much of the candidate's time, however, functionally it doesn't make
 sense. What's the point in adding pagination when all of the information is 
@@ -27,11 +30,13 @@ users to register to the website I would normally add something like an
 invitation link.
 
 > PicoCSS?
+
 I wanted to play around with picoCSS - a css framework that prides itself in 
 avoiding classes as much as possible by levaraging semantic html. Figured it 
 would be more than enough for a small CRUD app.
 
 > How do I edit/delete books?
+
 Book editing and deletion is accessed available the user is logged in. The 
 frontend handles this by only rendering the edit/remove buttons when the user 
 is logged in, while the backend flat out redirects the user to a login page if
