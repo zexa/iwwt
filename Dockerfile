@@ -26,7 +26,7 @@ RUN echo "max_input_vars = 1000" >> /usr/local/etc/php/conf.d/docker-php-max-inp
 EXPOSE 9000
 EXPOSE 8080
 
-RUN mkdir -p /var/www/symfony/vendor
+RUN mkdir -p /var/www/symfony/vendor/symfony
 
 # Copy application files and set permissions
 COPY --chown=www-data:www-data . /var/www/symfony
