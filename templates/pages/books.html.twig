@@ -40,6 +40,15 @@
         });
     });
 
+    const refreshBooks = () => {
+        const bookList = document.getElementById("books-list");
+        fetch("{{ path('app_books') }}")
+            .then((response) => response.text())
+            .then((text) => {
+                bookList.innerHTML = text;
+            });
+    };
+
     const submitBook = (event) => {
         event.preventDefault();
         const modal = document.getElementById('book-form');
@@ -55,7 +64,7 @@
             .then((response) => response.text())
             .then((text) => {
                 if (text === 'OK') {
-                    console.log('Book submitted successfully');
+                    refreshBooks();
                     modal.close();
                     return;
                 }
@@ -189,7 +198,7 @@
     </div>
 
     {% if app.user %}
-    <button type="submit" onclick="newBook(event)">New Book</button>
+    <button type="submit" onclick="newBook(event, null)">New Book</button>
     <dialog id="book-form">
         <article>
             <header>

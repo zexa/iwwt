@@ -1,0 +1,30 @@
+{% for book in books %}
+<article>
+    <hgroup>
+        <h3 class="book-title">{{ book.title }}</h3>
+        <p class="book-author">{{ book.author }}</p>
+    </hgroup>
+
+    <strong>ISBN:</strong> <span class="book-isbn">{{ book.isbn }}</span>
+    <br>
+
+    <strong>Publication Date:</strong> {{ book.publicationDate|date('Y-m-d') }}
+    <br>
+
+    <strong>Genres:</strong> {{ book.genres|join(', ') }}
+    <br>
+
+    <strong>Number of Copies:</strong> {{ book.copies }}
+    <br>
+
+    {% if app.user %}
+        <hr>
+        <button class="outline" type="submit" onclick="newBook(event, '{{ book.id }}')">Edit Book</button>
+
+
+        <form action="{{ path('app_delete_book', {'bookId': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this book?');">
+            <button class="outline red" type="submit">Remove</button>
+        </form>
+    {% endif %}
+</article>
+{% endfor %}

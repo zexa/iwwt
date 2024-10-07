@@ -20,9 +20,10 @@ class BookController extends AbstractController {
     ) {
     }
 
-    #[Route(path: '/', name: 'app_books')]
-    public function listBooks(): Response
+    #[Route(path: '/', name: 'app_index')]
+    public function getIndex(): Response
     {
+        // You'd normally want pagination here
         $books = $this->bookRepository->findAll();
 
         $newBookForm = $form = $this->createForm(BookFormType::class);
@@ -30,6 +31,17 @@ class BookController extends AbstractController {
         return $this->render('pages/books.html.twig', [
             'books' => $books,
             'new_book_form' => $newBookForm,
+        ]);
+    }
+
+    #[Route(path: '/books', name: 'app_books')]
+    public function getBooks(): Response
+    {
+        // You'd normally want pagination here
+        $books = $this->bookRepository->findAll();
+
+        return $this->render('components/books.html.twig', [
+            'books' => $books,
         ]);
     }
 
@@ -102,6 +114,6 @@ class BookController extends AbstractController {
         $this->entityManager->remove($book);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_books');
+        return new Response('OK', Response::HTTP_OK);
     }
 }
