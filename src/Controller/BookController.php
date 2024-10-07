@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookFormType;
 use App\Repository\BookRepository;
+use App\Service\BookService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,16 +16,15 @@ use Symfony\Component\Routing\Attribute\Route;
 class BookController extends AbstractController {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly BookRepository $bookRepository,
         private readonly LoggerInterface $logger,
+        private readonly BookService $bookService,
     ) {
     }
 
     #[Route(path: '/', name: 'app_index')]
     public function getIndex(): Response
     {
-        // You'd normally want pagination here
-        $books = $this->bookRepository->findAll();
+        $books = $this->bookService->getAll();
 
         $newBookForm = $form = $this->createForm(BookFormType::class);
 
@@ -37,8 +37,7 @@ class BookController extends AbstractController {
     #[Route(path: '/books', name: 'app_books')]
     public function getBooks(): Response
     {
-        // You'd normally want pagination here
-        $books = $this->bookRepository->findAll();
+        $books = $this->bookService->getAll();
 
         return $this->render('components/books.html.twig', [
             'books' => $books,
@@ -59,9 +58,8 @@ class BookController extends AbstractController {
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($book);
+            $this->bookService->saveBook($book);
             $this->entityManager->flush();
-    
             return new Response('OK', Response::HTTP_OK);
         }
 
@@ -76,7 +74,7 @@ class BookController extends AbstractController {
     #[Route(path: '/book/{bookId}/edit', name: 'app_edit_book')]
     public function editBook(Request $request, int $bookId): Response
     {
-        $book = $this->bookRepository->find($bookId);
+        $book = $this->bookService->getBookById($bookId);
 
         if (!$book) {
             throw $this->createNotFoundException('Book not found.');
@@ -90,7 +88,9 @@ class BookController extends AbstractController {
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->bookService->saveBook($book);
             $this->entityManager->flush();
+
             return new Response('OK', Response::HTTP_OK);
         }
 
@@ -105,13 +105,13 @@ class BookController extends AbstractController {
     #[Route(path: '/book/{bookId}/delete', name: 'app_delete_book')]
     public function deleteBook(int $bookId): Response
     {
-        $book = $this->bookRepository->find($bookId);
+        $book = $this->bookService->getBookById($bookId);
 
         if (!$book) {
             throw $this->createNotFoundException('Book not found.');
         }
 
-        $this->entityManager->remove($book);
+        $this->bookService->deleteBook($book);
         $this->entityManager->flush();
 
         return $this->redirectToRoute('app_index');
