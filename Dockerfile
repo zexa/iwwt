@@ -27,7 +27,8 @@ EXPOSE 9000
 EXPOSE 8080
 
 RUN mkdir -p /var/www/symfony/vendor/symfony \
-    && mkdir -p /var/www/.composer/cache/
+    && mkdir -p /var/www/.composer/cache/ \
+    && chown -R www-data:www-data /var/www/.composer/cache/
 
 # Copy application files and set permissions
 COPY --chown=www-data:www-data . /var/www/symfony
