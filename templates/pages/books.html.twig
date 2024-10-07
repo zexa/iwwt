@@ -72,10 +72,15 @@
         if (!modal) return;
         const div = modal.querySelector('div');
 
+        let bookHeaderText = "New Book";
         let url = "/book"
         if (id) {
+            bookHeaderText = "Edit Book";
             url = `/book/${id}/edit`;
         }
+
+        const bookHeader = document.getElementById('book-header');
+        bookHeader.innerHTML = bookHeaderText;
 
         fetch(url)
             .then(response => response.text())
@@ -194,7 +199,7 @@
                     data-target="book-form"
                     onclick="toggleModal(event)"
                 ></button>
-                <p><strong>New Book</strong></p>
+                <p><strong id="book-header">New Book</strong></p>
             </header>
             <div></div>
         </article>
