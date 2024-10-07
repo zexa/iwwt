@@ -42,8 +42,6 @@ symfony server:start
 
 ````
 fly deploy
-fly ssh console
-bin/console doctrine:migrations:execute
 ```
 
 I use fly.io for deployments. While flyctl does not directly support symfony,
