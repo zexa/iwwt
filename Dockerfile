@@ -27,6 +27,7 @@ EXPOSE 9000
 EXPOSE 8080
 
 RUN mkdir -p /var/www/symfony/vendor/symfony \
+    && chown -R www-data:www-data /var/www/symfony/vendor/ \
     && mkdir -p /var/www/.composer/cache/ \
     && chown -R www-data:www-data /var/www/.composer/cache/
 
