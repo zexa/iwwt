@@ -41,7 +41,11 @@ class BookFormType extends AbstractType {
                     ]),
                 ],
             ])
-            ->add("publication_date", DateType::class)
+            ->add("publication_date", DateType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Publication Date is required']),
+                ],
+            ])
             ->add("genres", CollectionType::class, [
                 'entry_type' => TextType::class,
                 'entry_options' => ['label' => false],

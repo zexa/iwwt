@@ -80,7 +80,7 @@ class Book
         return $this->publicationDate;
     }
 
-    public function setPublicationDate(\DateTimeInterface $publicationDate): static
+    public function setPublicationDate(?\DateTimeInterface $publicationDate): static
     {
         $this->publicationDate = $publicationDate;
 
