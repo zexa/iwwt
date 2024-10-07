@@ -40,6 +40,12 @@ class BookController extends AbstractController {
         $form = $this->createForm(BookFormType::class, $book);
         $form->handleRequest($request);
 
+        $this->logger->debug('new book', [
+            'form_errors' => $form->getErrors(true, false),
+            'is_submitted_and_valid' => $form->isSubmitted() && $form->isValid(),
+            'book' => $book,
+        ]);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($book);
             $this->entityManager->flush();
@@ -68,7 +74,6 @@ class BookController extends AbstractController {
         $form->handleRequest($request);
 
         $this->logger->debug('Editing book', [
-            'is_submitted' => $form->isSubmitted(),
             'book' => $book,
         ]);
 

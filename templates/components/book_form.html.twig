@@ -1,4 +1,4 @@
-{{ form_start(form) }}
+{{ form_start(form, {'action': app.request.uri}) }}
     {{ form_errors(form) }}
 
     <div class="form-group">
@@ -112,5 +112,5 @@
         </small>
     </div>
 
-    <button onclick="submitBook">{{ is_editing ? 'Update' : 'Add' }} book</button>
+    <button onclick="submitBook(event)">{{ is_editing ? 'Update' : 'Add' }} book</button>
 {{ form_end(form) }}

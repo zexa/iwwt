@@ -40,38 +40,30 @@
         });
     });
 
-    const submitBook = async (event) => {
+    const submitBook = (event) => {
         event.preventDefault();
-
-        console.log("submitBook");
-
         const modal = document.getElementById('book-form');
         if (!modal) return;
 
-        const form = modal.querySelector('form'); // Assuming your form has a <form> tag
-        const formData = new FormData(form); // Collect form data
+        const form = modal.querySelector('form');
+        const formData = new FormData(form);
+        console.log(form.method, form.action, formData);
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+        })
+            .then((response) => response.text())
+            .then((text) => {
+                if (text === 'OK') {
+                    console.log('Book submitted successfully');
+                    modal.close();
+                    return;
+                }
 
-
-        try {
-            const response = await fetch(form.action, {
-                method: form.method, // e.g., POST or PUT
-                body: formData,
-            });
-
-            // Check if the response is OK
-            if (response.ok) {
-                // Handle success, maybe close the modal or refresh the book list
-                console.log('Book submitted successfully');
-                modal.close(); // Close the modal if needed
-            } else {
-                // If not OK, re-render the form
-                const html = await response.text();
+                console.log("something went wrong");
                 const div = modal.querySelector('div');
-                div.innerHTML = html; // Re-render the form
-            }
-        } catch (error) {
-            console.error('Error submitting the book:', error);
-        }
+                div.innerHTML = text;
+            });
     };
 
     const newBook = (event) => {
@@ -88,7 +80,7 @@
             .catch(error => console.error('Error loading form:', error));
     };
 
-        function clearError(input) {
+    function clearError(input) {
         const helperId = input.getAttribute('aria-describedby');
         const helperText = document.getElementById(helperId);
         if (helperText) {
