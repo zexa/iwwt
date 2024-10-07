@@ -37,7 +37,7 @@ class SecurityController extends AbstractController
         }
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_books');
+            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('pages/login.html.twig', [
@@ -59,7 +59,7 @@ class SecurityController extends AbstractController
         }
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_books');
+            return $this->redirectToRoute('app_index');
         }
 
         $user = new User();
