@@ -9,12 +9,6 @@ Interview Task for Wise Team by Augustinas Kalvis.
 Normally I'd set up some linter like php-cs-fixer and phpstand to highlight
 any mistakes.
 
-> Where are the tests?
-
-I did not want to write unit tests for a single assertion that entityManager
-was called. Normally we'd split Controllers from Services, but this app does
-not have enough business logic to merit it.
-
 > Add pagination to the book list using JavaScript.
 
 This point made me raise some questions. I assume that the purpose was to not
