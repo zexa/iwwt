@@ -70,4 +70,5 @@ I'd be redirected back to the login screen. After one of the deployments I
 received a "Invalid CSRF token." error. I wasted 2 hours not realizing that I
 was deploying from my laptop without first clearing the cache. In hindsight, I
 should've spent some time to set up some CI/CD pipelines so that my deployments
-would be cleaner, but oh well.
+would be cleaner, but oh well. In addition, it might be an issue with the fly.io
+proxies, which is why I've set the cookies to lax.
