@@ -54,7 +54,7 @@
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <button type="submit">Sign in</button>
+        <button onclick="submitLogin(event)" type="submit">Sign in</button>
     </form>
     <a href="/signup">Don't have an account yet?</a>
 </main>
@@ -73,5 +73,11 @@
             usernameInput.removeAttribute('aria-invalid');
         });
     });
+
+    const submitLogin = (event) => {
+        const button = event.target;
+        button.setAttribute('aria-busy', 'true');
+        button.setAttribute('aria-label', 'Please wait…');
+    };
 </script>
 {% endblock %}

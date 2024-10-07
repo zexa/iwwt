@@ -59,7 +59,7 @@
             </small>
         </div>
 
-        <button type="submit">Sign up</button>
+        <button onclick="submitRegistration(event)" type="submit">Sign up</button>
 
         {{ form_rest(form) }}
     {{ form_end(form) }}
@@ -94,5 +94,11 @@
             clearError(input);
         }
     }
+
+    const submitRegistration = (event) => {
+        const button = event.target;
+        button.setAttribute('aria-busy', 'true');
+        button.setAttribute('aria-label', 'Please wait…');
+    };
 </script>
 {% endblock %}
