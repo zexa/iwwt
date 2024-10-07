@@ -1,12 +1,11 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    csrf_protection: true
 
     trusted_proxies: '127.0.0.1,REMOTE_ADDR'
     # Note that the session will be started ONLY if you read or write from it.
-    session: 
-        cookie_samesite: 'lax'
+    session:
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
     #esi: true
     #fragments: true
 

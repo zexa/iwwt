@@ -67,8 +67,10 @@ tested and deployed only if tests go through and/or are approved.
 
 After deploying I tested my application, after which I found that after a login
 I'd be redirected back to the login screen. After one of the deployments I 
-received a "Invalid CSRF token." error. I wasted 2 hours not realizing that I
-was deploying from my laptop without first clearing the cache. In hindsight, I
-should've spent some time to set up some CI/CD pipelines so that my deployments
-would be cleaner, but oh well. In addition, it might be an issue with the fly.io
-proxies, which is why I've set the cookies to lax.
+received a "Invalid CSRF token" error. I tried many things: Clearing cache,
+storing cookies in lax mode, disabling csrf (it worked, but I didn't want to 
+embarass myself). Finally, it clicked that since I have two machines running
+my app and by default sessions are stored in the filesystem, I might hit the 
+other machine that doesn't know about my sessions. The proper solution would be
+to use something like redis for session storage, but since I wanted to avoid 
+extra dependencies I sticked to storing everything into a database.
