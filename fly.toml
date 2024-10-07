@@ -1,6 +1,8 @@
 app = "iwwt"
 primary_region = "waw"
-console_command = "bin/console cache:warmup --env=prod"
+
+[deploy]
+  release_command = "php bin/console cache:clear --env=prod && bin/console cache:warmup --env=prod"
 
 [env]
   APP_RUNTIME = '\App\FlySymfonyRuntime'
