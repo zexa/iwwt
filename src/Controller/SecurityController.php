@@ -79,7 +79,7 @@ class SecurityController extends AbstractController
 
             $this->loginUser($user);
     
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('pages/signup.html.twig', [
